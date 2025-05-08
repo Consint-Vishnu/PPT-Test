@@ -1,68 +1,45 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useState, useEffect } from 'react';
 import './App.css';
+import SplashCursor from './SplashCursor';
 
 const App: React.FC = () => {
-  const [pptEditUrl, setPptEditUrl] = useState<string | null>(null);
-  const [pptViewUrl, setPptViewUrl] = useState<string | null>(null);
-
-  const patientId = "BLKH.1227663";
-  const apiUrl = `https://api.dev.ciphrv3.consint.ai/api/v1/generate-upload-ppt/?patientId=${patientId}`;
-
-  useEffect(() => {
-    const fetchPptUrl = async () => {
-      try {
-        const response = await fetch(apiUrl, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            "Authorization": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkb2N0b3IiLCJyb2xlIjoiZG9jdG9yIiwiZmlyc3RfbmFtZSI6IkRyLiBBYmhpZGVlcCIsImxhc3RfbmFtZSI6IkNoYXVkaGFyeSIsInVzZXJJZCI6MiwiZXhwIjoxNzQyNTY2NTIxfQ.GVUOZ9qnoQ57bZR0S5VqMfHm7qpzv7GtMs54KXkn-sE",
-          },
-        });
-
-        if (!response.ok) throw new Error(`Failed to fetch PPT URL. Status: ${response.status}`);
-
-        const data = await response.json();
-        if (data.web_url) {
-          setPptEditUrl(data.web_url);
-        }
-
-      } catch (error) {
-        console.error("Error fetching PPT URL:", error);
-      }
-    };
-
-    fetchPptUrl();
-  }, []); // Run only once on mount
-
-  // Convert Edit URL to View URL when Edit URL updates
-  useEffect(() => {
-    if (pptEditUrl) {
-      const updatedUrl = pptEditUrl.replace("action=edit", "action=embedview").replace("Doc.aspx", "WopiFrame.aspx");
-      setPptViewUrl(updatedUrl);
-    }
-  }, [pptEditUrl]);
-
-  return (
-    <div className="ppt-container">
-      {/* Display the PowerPoint in View Mode */}
-      {pptViewUrl ? (
-        <iframe
-          src={pptViewUrl}
-          width="100%"
-          height="100%"
-          frameBorder="0"
+  return (  
+    <>
+      {/* <div className="landing-container">
+        <SplashCursor />
+        <div className="hero-section">
+          <h1>Welcome to Our Platform</h1>
+          <p>Discover amazing presentations and collaborate with others</p>
+          <button className="cta-button">Get Started</button>
+        </div>
+        <div className="features-section">
+          <div className="feature">
+            <div className="feature-icon">🚀</div>
+            <h2>Fast Loading</h2>
+            <p>Access presentations instantly with our optimized platform</p>
+          </div>
+          <div className="feature">
+            <div className="feature-icon">🔒</div>
+            <h2>Secure Sharing</h2>
+            <p>Share your content safely with robust security features</p>
+          </div>
+          <div className="feature">
+            <div className="feature-icon">📱</div>
+            <h2>Mobile Friendly</h2>
+            <p>Access your presentations on any device, anywhere</p>
+          </div>
+        </div>
+      </div> */}
+       <div className="iframe-container">
+        <iframe 
+          src="https://phj.maxhealthcare.in/phj/BLKH.1016902?key=0E602F4D-D7EC-465B-9F2B-909B65F7828B&sessionId=143257036&userId=48018&type=phj"
+          title="PHJ Content"
+          width="100%" 
+          height="100%" 
         ></iframe>
-      ) : (
-        <p>Loading PowerPoint...</p>
-      )}
-
-      {/* Floating Edit Button */}
-      {pptEditUrl && (
-        <button className="edit-btn" onClick={() => window.open(pptEditUrl, "_blank")}>
-          Edit This PPT
-        </button>
-      )}
-    </div>
+      </div>
+    </>
   );
 };
 
